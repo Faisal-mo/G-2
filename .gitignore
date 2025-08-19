@@ -73,3 +73,25 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+# Unity generated folders (لا تُرفع)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+Assets/AssetStoreTools*
+
+# Package cache (ما يُرفع)
+Packages/PackageCache/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# نظام
+.DS_Store
+Thumbs.db

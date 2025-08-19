@@ -5,17 +5,15 @@ public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
-    [Header("Grid Settings")]
-    public float cellSize = 1.0f;
-    public int gridWidth = 20;     // Cells per player (half total width)
-    public int gridDepth = 10;     // Total grid depth
-    public float centerGap = 2.0f; // Space between P1 and P2 grids (adjustable)
+    public float cellSize = 1f;
+    public int gridWidth = 20;
+    public int gridDepth = 10;
+    public float centerGap = 2f;
 
-    [Header("Player Colors")]
     public Color player1Color = Color.cyan;
     public Color player2Color = Color.red;
 
-    private Dictionary<Vector3Int, bool> occupiedCells = new Dictionary<Vector3Int, bool>();
+    Dictionary<Vector3Int, bool> occupied = new Dictionary<Vector3Int, bool>();
 
     void Awake()
     {
@@ -23,84 +21,122 @@ public class GridManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // Convert world position to grid cell
     public Vector3Int WorldToCell(Vector3 worldPos)
     {
-        float adjustedX = worldPos.x + (gridWidth * cellSize + centerGap) * 0.5f;
+        float halfTotal = gridWidth * cellSize + centerGap;
+        float adjustedX = worldPos.x + halfTotal * 0.5f;
         int x = Mathf.FloorToInt(adjustedX / cellSize);
-        int z = Mathf.FloorToInt(worldPos.z / cellSize);
+        int z = Mathf.FloorToInt((worldPos.z + gridDepth * 0.5f * cellSize) / cellSize);
         return new Vector3Int(x, 0, z);
     }
 
-    // Check if cell is empty
-    public bool IsCellEmpty(Vector3 worldPos)
+    public Vector3 CellToWorldCenter(Vector3Int cell)
     {
-        Vector3Int cell = WorldToCell(worldPos);
-        return !occupiedCells.ContainsKey(cell);
+        float halfTotal = gridWidth * cellSize + centerGap;
+        float x = cell.x * cellSize - halfTotal * 0.5f + cellSize * 0.5f;
+        float z = cell.z * cellSize - gridDepth * 0.5f * cellSize + cellSize * 0.5f;
+        return new Vector3(x, 0f, z);
     }
 
-    // Occupy cell
-    public void OccupyCell(Vector3 worldPos)
+    public bool IsCellEmpty(Vector3Int cell)
     {
-        Vector3Int cell = WorldToCell(worldPos);
-        occupiedCells[cell] = true;
+        return !occupied.ContainsKey(cell);
     }
 
-    // Get random position in player zone
-    public Vector3 GetRandomBuildPosition(int playerID)
+    public void OccupyCell(Vector3Int cell)
     {
-        int maxAttempts = 10;
+        occupied[cell] = true;
+    }
+
+    public void FreeCell(Vector3Int cell)
+    {
+        if (occupied.ContainsKey(cell)) occupied.Remove(cell);
+    }
+
+    public bool IsInsidePlayerZone(int playerId, Vector3Int cell)
+    {
+        int leftStart = 0;
+        int leftEnd = gridWidth;
+        int rightStart = gridWidth + Mathf.CeilToInt(centerGap / cellSize);
+        int rightEnd = rightStart + gridWidth;
+        bool inZ = cell.z >= 0 && cell.z < gridDepth;
+        if (!inZ) return false;
+        if (playerId == 1) return cell.x >= leftStart && cell.x < leftEnd;
+        return cell.x >= rightStart && cell.x < rightEnd;
+    }
+
+    public bool TryGetSnappedPosition(int playerId, Vector3 worldInput, out Vector3 snapped, out Vector3Int cell)
+    {
+        cell = WorldToCell(worldInput);
+        if (!IsInsidePlayerZone(playerId, cell)) { snapped = Vector3.zero; return false; }
+        if (!IsCellEmpty(cell)) { snapped = Vector3.zero; return false; }
+        snapped = CellToWorldCenter(cell);
+        return true;
+    }
+
+    public bool TryGetRandomBuildCell(int playerId, out Vector3Int cell, int maxAttempts = 32)
+    {
+        cell = default;
         for (int i = 0; i < maxAttempts; i++)
         {
-            float xOffset = (gridWidth * cellSize + centerGap) * 0.5f;
-            float x = (playerID == 1)
-                ? Random.Range(-xOffset, -centerGap * 0.5f)
-                : Random.Range(centerGap * 0.5f, xOffset);
-
-            Vector3 pos = new Vector3(
-                x,
-                0,
-                Random.Range(-gridDepth * 0.5f * cellSize, gridDepth * 0.5f * cellSize)
-            );
-
-            if (IsCellEmpty(pos)) return pos;
+            if (playerId == 1)
+            {
+                int x = Random.Range(0, gridWidth);
+                int z = Random.Range(0, gridDepth);
+                var c = new Vector3Int(x, 0, z);
+                if (IsCellEmpty(c)) { cell = c; return true; }
+            }
+            else
+            {
+                int gapCells = Mathf.CeilToInt(centerGap / cellSize);
+                int start = gridWidth + gapCells;
+                int x = Random.Range(start, start + gridWidth);
+                int z = Random.Range(0, gridDepth);
+                var c = new Vector3Int(x, 0, z);
+                if (IsCellEmpty(c)) { cell = c; return true; }
+            }
         }
-        return Vector3.zero;
+        return false;
     }
 
-    // Draw colored grid with center gap
+    public Bounds GetPlayerBounds(int playerId)
+    {
+        float w = gridWidth * cellSize;
+        float d = gridDepth * cellSize;
+        float halfGap = centerGap * 0.5f;
+        Vector3 size = new Vector3(w, 0.1f, d);
+        Vector3 center;
+        if (playerId == 1) center = new Vector3(-(w * 0.5f + halfGap), 0f, 0f);
+        else center = new Vector3((w * 0.5f + halfGap), 0f, 0f);
+        return new Bounds(center, size);
+    }
+
     void OnDrawGizmos()
     {
-        float halfTotalWidth = (gridWidth * cellSize + centerGap) * 0.5f;
+        float w = gridWidth * cellSize;
+        float d = gridDepth * cellSize;
+        float halfTotal = w + centerGap;
         float halfGap = centerGap * 0.5f;
 
-        // Player 1 Grid (Left - Cyan)
         Gizmos.color = player1Color;
         for (int x = 0; x < gridWidth; x++)
         {
             for (int z = 0; z < gridDepth; z++)
             {
-                Vector3 pos = new Vector3(
-                    x * cellSize - halfTotalWidth,
-                    0,
-                    z * cellSize - (gridDepth * 0.5f * cellSize)
-                );
-                Gizmos.DrawWireCube(pos, new Vector3(cellSize, 0.1f, cellSize));
+                Vector3 pos = new Vector3(x * cellSize - halfTotal * 0.5f + cellSize * 0.5f, 0f, z * cellSize - d * 0.5f + cellSize * 0.5f);
+                Gizmos.DrawWireCube(pos, new Vector3(cellSize, 0.05f, cellSize));
             }
         }
 
-        // Player 2 Grid (Right - Red)
         Gizmos.color = player2Color;
+        int gapCells = Mathf.CeilToInt(centerGap / cellSize);
+        int start = gridWidth + gapCells;
         for (int x = 0; x < gridWidth; x++)
         {
             for (int z = 0; z < gridDepth; z++)
             {
-                Vector3 pos = new Vector3(
-                    x * cellSize + halfGap,
-                    0,
-                    z * cellSize - (gridDepth * 0.5f * cellSize)
-                );
-                Gizmos.DrawWireCube(pos, new Vector3(cellSize, 0.1f, cellSize));
+                Vector3 pos = new Vector3((start + x) * cellSize - halfTotal * 0.5f + cellSize * 0.5f, 0f, z * cellSize - d * 0.5f + cellSize * 0.5f);
+                Gizmos.DrawWireCube(pos, new Vector3(cellSize, 0.05f, cellSize));
             }
         }
     }

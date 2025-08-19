@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef56611f912bf2d40a611da662e0c97d, type: 3}
+  m_Name: EnemyDataBoos
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7153413839425197891, guid: 9ab08270570dcb048923ee44179877ae, type: 3}
+  hp: 150
+  moveSpeed: 2.2
+  rewardOnDeath: 25
+  armorPercent: 0
