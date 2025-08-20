@@ -10,20 +10,13 @@ public class Bank : MonoBehaviour
     [Min(0)] public int startingMoney = 50;
 
     [Header("Events")]
-    public IntEvent onBalanceChanged;   
+    public IntEvent onBalanceChanged;
 
     int _money;
     public int Money => _money;
 
-    void Awake()
-    {
-        _money = Mathf.Max(0, startingMoney);
-    }
-
-    void Start()
-    {
-        onBalanceChanged?.Invoke(_money);
-    }
+    void Awake() { _money = Mathf.Max(0, startingMoney); }
+    void Start() { onBalanceChanged?.Invoke(_money); }
 
     public void ResetToStart()
     {
@@ -46,8 +39,8 @@ public class Bank : MonoBehaviour
 
     public bool TrySpend(int amount)
     {
-        if (amount <= 0) return true;       
-        if (_money < amount) return false;  
+        if (amount <= 0) return true;
+        if (_money < amount) return false;
         _money -= amount;
         onBalanceChanged?.Invoke(_money);
         return true;

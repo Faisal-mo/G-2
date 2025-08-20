@@ -275,7 +275,7 @@ MonoBehaviour:
   waitClearForNextWave: 0
   clearTimeout: 20
   spawnPoint: {fileID: 1420130724}
-  path: {fileID: 1931592866}
+  path: {fileID: 1931592868}
   goal: {fileID: 1386278026}
   tintNormalsByMap: 1
   sideName: P1
@@ -381,7 +381,7 @@ MonoBehaviour:
   waitClearForNextWave: 0
   clearTimeout: 20
   spawnPoint: {fileID: 76086733}
-  path: {fileID: 1738778845}
+  path: {fileID: 1738778847}
   goal: {fileID: 875068156}
   tintNormalsByMap: 1
   sideName: P2
@@ -623,7 +623,6 @@ GameObject:
   - component: {fileID: 875068155}
   - component: {fileID: 875068154}
   - component: {fileID: 875068153}
-  - component: {fileID: 875068152}
   m_Layer: 0
   m_Name: goalP2
   m_TagString: Untagged
@@ -631,25 +630,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &875068152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875068151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39cff5a0baaed794880eb2e4c81e5cf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lives: 20
-  onLose:
-    m_PersistentCalls:
-      m_Calls: []
-  onWin:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &875068153
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1035,7 +1015,6 @@ GameObject:
   - component: {fileID: 1386278025}
   - component: {fileID: 1386278024}
   - component: {fileID: 1386278023}
-  - component: {fileID: 1386278022}
   m_Layer: 0
   m_Name: goalP1
   m_TagString: Untagged
@@ -1043,25 +1022,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1386278022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386278021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39cff5a0baaed794880eb2e4c81e5cf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lives: 20
-  onLose:
-    m_PersistentCalls:
-      m_Calls: []
-  onWin:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &1386278023
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1545,7 +1505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1738778846}
-  - component: {fileID: 1738778845}
+  - component: {fileID: 1738778847}
   m_Layer: 0
   m_Name: Path_ToP2
   m_TagString: Untagged
@@ -1553,23 +1513,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1738778845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738778844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85635a1bc20fe19449f7031833bb8841, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 1777665589}
-  - {fileID: 334146014}
-  - {fileID: 2135885799}
-  - {fileID: 79937979}
 --- !u!4 &1738778846
 Transform:
   m_ObjectHideFlags: 0
@@ -1589,6 +1532,23 @@ Transform:
   - {fileID: 79937979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1738778847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738778844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63b2d37a717b8b4f8c28aa467d04fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 1777665589}
+  - {fileID: 334146014}
+  - {fileID: 2135885799}
+  - {fileID: 79937979}
 --- !u!1 &1749649747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,7 +1647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1931592867}
-  - component: {fileID: 1931592866}
+  - component: {fileID: 1931592868}
   m_Layer: 0
   m_Name: Path_ToP1
   m_TagString: Untagged
@@ -1695,23 +1655,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1931592866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931592865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85635a1bc20fe19449f7031833bb8841, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 239654110}
-  - {fileID: 1940984519}
-  - {fileID: 842298899}
-  - {fileID: 1960221973}
 --- !u!4 &1931592867
 Transform:
   m_ObjectHideFlags: 0
@@ -1731,6 +1674,23 @@ Transform:
   - {fileID: 1960221973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1931592868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931592865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63b2d37a717b8b4f8c28aa467d04fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 239654110}
+  - {fileID: 1940984519}
+  - {fileID: 842298899}
+  - {fileID: 1960221973}
 --- !u!1 &1940984518
 GameObject:
   m_ObjectHideFlags: 0
