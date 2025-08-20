@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ef56611f912bf2d40a611da662e0c97d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - basePrefab: {fileID: 7189364416265283875, guid: 824948c1e7e86a740bf38d403ca0260d, type: 3}
+  - bossPrefab_Diriyah: {fileID: 7153413839425197891, guid: 9ab08270570dcb048923ee44179877ae, type: 3}
+  - bossPrefab_Hijaz: {fileID: 7153413839425197891, guid: 9ab08270570dcb048923ee44179877ae, type: 3}
+  - bossPrefab_Egypt: {fileID: 7153413839425197891, guid: 9ab08270570dcb048923ee44179877ae, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
