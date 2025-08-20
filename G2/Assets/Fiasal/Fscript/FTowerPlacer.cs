@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class FTowerPlacer : MonoBehaviour
+    
+
 {
     [Header("Tower Prefabs")]
     public GameObject[] towerPrefabsP1; // Assign 3 towers in Inspector (1,2,3)
@@ -20,6 +22,17 @@ public class FTowerPlacer : MonoBehaviour
     private bool isSendingBossP1 = false;
     private bool isSendingBossP2 = false;
 
+
+    public AudioSource towerPlaceSound; // Assign in Inspector
+
+
+
+    void Start()
+    {
+        towerPlaceSound = GetComponent<AudioSource>();
+        
+    
+    }
     void Update()
     {
         HandlePlayer1Inputs();
@@ -31,6 +44,12 @@ public class FTowerPlacer : MonoBehaviour
     {
         // Tower Selection (1,2,3)
         if (Input.GetKeyDown(KeyCode.Alpha1)) selectedTowerIndexP1 = 0;
+
+        if (towerPlaceSound != null)
+        towerPlaceSound.Play();
+
+
+
         if (Input.GetKeyDown(KeyCode.Alpha2)) selectedTowerIndexP1 = 1;
         if (Input.GetKeyDown(KeyCode.Alpha3)) selectedTowerIndexP1 = 2;
 
