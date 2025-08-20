@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/ALMALKI UNITY.unity
+- path: Assets/Assetsl_UI_Aisha/Scenes/MainMenu_Aisha.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
