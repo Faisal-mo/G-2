@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
-public class IntEvent : UnityEvent<int> { }
+[System.Serializable] public class IntEvent : UnityEvent<int> { }
 
 public class Bank : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class Bank : MonoBehaviour
     [Min(0)] public int startingMoney = 50;
 
     [Header("Events")]
-    public IntEvent onBalanceChanged;
+    public IntEvent onBalanceChanged;   
 
     int _money;
     public int Money => _money;
@@ -37,6 +36,7 @@ public class Bank : MonoBehaviour
         onBalanceChanged?.Invoke(_money);
     }
 
+   
     public bool TrySpend(int amount)
     {
         if (amount <= 0) return true;

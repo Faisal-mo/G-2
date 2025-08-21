@@ -14,10 +14,24 @@ public class PlayerHealth : MonoBehaviour
         OnLivesChanged?.Invoke(Lives);
     }
 
-    public void LoseOne()
+   
+    public void Lose(int amount)
     {
-        Lives = Mathf.Max(0, Lives - 1);
+        int dmg = Mathf.Max(0, amount);
+        if (dmg == 0) return;
+
+        Lives = Mathf.Max(0, Lives - dmg);
         OnLivesChanged?.Invoke(Lives);
         if (Lives == 0) OnDefeated?.Invoke();
+    }
+
+   
+    public void LoseOne() => Lose(1);
+
+ 
+    public void ResetToStart()
+    {
+        Lives = Mathf.Max(0, startLives);
+        OnLivesChanged?.Invoke(Lives);
     }
 }

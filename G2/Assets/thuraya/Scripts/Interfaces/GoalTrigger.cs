@@ -4,30 +4,30 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class GoalTrigger : MonoBehaviour
 {
-    [Tooltip("GameEnder  lives/onLose)")]
-    public GameEnder ender;
+    [Tooltip("ÕÇÍÈ åĞå ÇáŞáÚÉ")]
+    public PlayerHealth playerHealth;
 
-    [Tooltip("damigimpact")]
+    [Tooltip("ßã íäŞÕ ãä ÇáŞáæÈ ÚäÏ ÏÎæá ÚÏæ æÇÍÏ")]
     public int damagePerEnemy = 1;
 
+    
     private readonly HashSet<int> processedEnemies = new HashSet<int>();
 
     private void OnTriggerEnter(Collider other)
     {
-
         var enemy = other.GetComponentInParent<EnemyNavAI>();
-        if (enemy == null) return;
+        if (!enemy) return;
 
         int id = enemy.GetInstanceID();
-        if (!processedEnemies.Add(id)) return; 
+        if (!processedEnemies.Add(id)) return;
 
-        enemy.NotifyReachedGoal();
+      
+        if (playerHealth != null)
+            playerHealth.Lose(Mathf.Max(1, damagePerEnemy));
 
-     
-        if (ender != null)
-            ender.ApplyDamage(Mathf.Max(1, damagePerEnemy));
+        enemy.SendMessage("NotifyReachedGoal", SendMessageOptions.DontRequireReceiver);
 
-        
+    
         Destroy(enemy.gameObject);
     }
 }

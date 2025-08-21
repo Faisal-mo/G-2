@@ -1,4 +1,4 @@
-﻿using System;                     // للأحداث Action
+﻿using System;                     
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,15 +14,15 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
     [Header("Navigation")]
     public float reachedDistance = 0.25f;
 
-    // أحداث توافقية مع مدراء قديمة (Wave/Managers)
+   
     public Action<EnemyNavAI> OnDied;
     public Action<EnemyNavAI> OnReachedGoal;
 
     private NavMeshAgent agent;
     private Transform[] path;
     private int idx = -1;
-    private Transform finalGoal;     // نقطة داخل القلعة
-    private Bank rewardToBank;       // بنك المُرسِل (P1 أو P2)
+    private Transform finalGoal;     
+    private Bank rewardToBank;       
 
     void Awake()
     {
@@ -31,9 +31,6 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
         agent.autoBraking = true;
     }
 
-    // ========= واجهات توافقية مطلوبة من أكواد قديمة =========
-
-    // مثل EnemyAI.SetPath(...)
     public void SetPath(Transform[] waypoints)
     {
         path = waypoints;
@@ -42,7 +39,7 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
             agent.SetDestination(path[0].position);
     }
 
-    // النسخة الكلاسيكية (4 معاملات): Initialize(hp, speed, reward, armor)
+    
     public void Initialize(float health, float speed, int reward, float armor)
     {
         hp = health;
@@ -50,19 +47,16 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
         armorPercent = Mathf.Clamp01(armor);
         agent.speed = speed;
 
-        // لو ما فيه مسار، وجِد هدف نهائي، امشِ له
         if ((path == null || path.Length == 0) && finalGoal != null)
             agent.SetDestination(finalGoal.position);
     }
 
-    // (5 معاملات) مسار كخامس معامل
     public void Initialize(float health, float speed, int reward, float armor, Transform[] waypoints)
     {
         Initialize(health, speed, reward, armor);
         SetPath(waypoints);
     }
 
-    // (5 معاملات) هدف نهائي كخامس معامل
     public void Initialize(float health, float speed, int reward, float armor, Transform goal)
     {
         Initialize(health, speed, reward, armor);
@@ -71,21 +65,17 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
             agent.SetDestination(finalGoal.position);
     }
 
-    // (5 معاملات) بنك المُرسل كخامس معامل
     public void Initialize(float health, float speed, int reward, float armor, Bank senderBank)
     {
         Initialize(health, speed, reward, armor);
         rewardToBank = senderBank;
     }
 
-    // (5 معاملات) التقط أي نوع خامس (حالة طوارئ للتوافق)
     public void Initialize(float health, float speed, int reward, float armor, object _)
     {
         Initialize(health, speed, reward, armor);
-        // نتجاهل المعامل الخامس إن كان غير مهم لهذا العدو
     }
 
-    // واجهة حديثة كاملة من EnemyData (مفيدة لِـ VersusSpawner)
     public void InitFromData(EnemyData data, bool isBoss,
                              Transform[] waypoints, Transform goal, Bank senderBank)
     {
@@ -121,13 +111,11 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
                 else if (finalGoal != null)
                 {
                     agent.SetDestination(finalGoal.position);
-                    // GoalTrigger سيتكفّل بإعلان الوصول وخصم القلوب
                 }
             }
         }
     }
 
-    // يُستدعى من GoalTrigger قبل التدمير لإبلاغ أي مستمعين (Wave/Managers)
     public void NotifyReachedGoal()
     {
         OnReachedGoal?.Invoke(this);
@@ -144,7 +132,7 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
     {
         if (rewardToBank != null)
             rewardToBank.AddMoney(rewardOnDeath);
-        OnDied?.Invoke(this); // لمن يسمع وفيات الأعداء
+        OnDied?.Invoke(this); 
         Destroy(gameObject);
     }
 }
