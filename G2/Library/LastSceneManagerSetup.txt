@@ -1,9 +1,5 @@
 sceneSetups:
-<<<<<<< Updated upstream
-- path: Assets/Scenes/SampleScene.unity
-=======
-- path: Assets/GameScene_UI_Aisha.unity
->>>>>>> Stashed changes
+- path: Assets/Scenes/CardUI_Aisha.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

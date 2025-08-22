@@ -1,0 +1,30 @@
+{
+    "UxmlGuid": "fc7d85849d0d0ce4494403dc4eb55a66",
+    "UxmlPath": "Assets/Scenes/UI_File Aisha/TD_UI.uxml",
+    "CanvasX": -81,
+    "CanvasY": -73,
+    "CanvasWidth": 1920,
+    "CanvasHeight": 700,
+    "MatchGameView": false,
+    "ZoomScale": 0.8500000238418579,
+    "PanOffset": {
+        "x": 563.3222045898438,
+        "y": 293.138916015625
+    },
+    "ColorModeBackgroundOpacity": 1.0,
+    "ImageModeCanvasBackgroundOpacity": 1.0,
+    "CameraModeCanvasBackgroundOpacity": 1.0,
+    "EnableCanvasBackground": false,
+    "CanvasBackgroundMode": 0,
+    "CanvasBackgroundColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+    },
+    "CanvasBackgroundImage": {
+        "instanceID": 0
+    },
+    "CanvasBackgroundImageScaleMode": 1,
+    "CanvasBackgroundCameraName": ""
+}

@@ -1,0 +1,19 @@
+#CardsContainer {
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 16px;                 \
+}
+
+#Row1, #Row2 {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#Row1 > *, #Row2 > * {
+  width: 120px;              
+  height: 160px;
+  position: relative;
+}
