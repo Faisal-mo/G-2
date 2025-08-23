@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2de7553127f6bb24fb46b3451aca08f6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - projectilePrefab: {instanceID: 0}
+  - firePoint: {instanceID: 0}
+  - trapEffect: {instanceID: 0}
+  - trapLight: {instanceID: 0}
+  - slowEffect: {instanceID: 0}
+  - slowApplySound: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  - cannonShotSound: {instanceID: 0}
+  - trapActiveSound: {instanceID: 0}
+  - trapDamageSound: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
