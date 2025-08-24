@@ -2,34 +2,32 @@ using UnityEngine;
 
 public class CardGroup : MonoBehaviour
 {
-    private CardView[] cards;
+    [SerializeField] private CardView[] cards;
+    public int CurrentIndex { get; private set; } = -1;
 
-    void Awake()
+    public void Select(int index)
     {
-        cards = GetComponentsInChildren<CardView>(true);
+        if (cards == null || cards.Length == 0) return;
+        if (index < 0 || index >= cards.Length) return;
+
+        if (CurrentIndex >= 0 && CurrentIndex < cards.Length)
+            cards[CurrentIndex].SetSelected(false);
+
+        CurrentIndex = index;
+        cards[CurrentIndex].SetSelected(true);
+        Debug.Log($"[{name}] Selected: {cards[CurrentIndex].gameObject.name}");
     }
 
-    void Refresh()
+    public void Clear()
     {
-        if (cards == null || cards.Length == 0)
-            cards = GetComponentsInChildren<CardView>(true);
+        if (CurrentIndex >= 0 && CurrentIndex < cards.Length)
+            cards[CurrentIndex].SetSelected(false);
+        CurrentIndex = -1;
     }
 
-    public void SelectExclusive(CardView clicked)
+    public CardView GetSelected()
     {
-        Refresh();
-        foreach (var c in cards) c.SetSelected(c == clicked);
-    }
-
-    public void SetInteractableAll(bool on)
-    {
-        Refresh();
-        foreach (var c in cards) c.SetInteractable(on);
-    }
-
-    public void ClearSelection()
-    {
-        Refresh();
-        foreach (var c in cards) c.SetSelected(false);
+        if (CurrentIndex < 0 || cards == null || CurrentIndex >= cards.Length) return null;
+        return cards[CurrentIndex];
     }
 }

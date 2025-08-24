@@ -355,6 +355,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.62f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scenes/UI_File Aisha/Scripts/CardGroup.cs"
 "Assets/Scenes/UI_File Aisha/Scripts/CardView.cs"
+"Assets/Scenes/UI_File Aisha/Scripts/KeyboardCardSelector1.cs"
 "Assets/Scenes/UI_File Aisha/Scripts/TD_UIController.cs"
 -langversion:9.0
 /deterministic
