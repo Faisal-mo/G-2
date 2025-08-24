@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 959526628831603986}
   - component: {fileID: 7283382780196347367}
   - component: {fileID: -5824669492670238690}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Capsule 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0

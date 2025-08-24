@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/thuraya/Scenes/MainMenu.unity
+    guid: 3c147278f51642c41bfee5bb504a6382
+  - enabled: 1
+    path: Assets/thuraya/Scenes/MapSelect.unity
+    guid: 3f227229eb89d1d408b019db6521efb9
+  - enabled: 1
+    path: Assets/thuraya/Scenes/Gameplay.unity
+    guid: dc04b28837f5d964e8cd05864f93687c
+  - enabled: 1
+    path: Assets/thuraya/Scenes/Level_Diriyah.unity
+    guid: a76921d42982e1748acda1ebdadd64b3
+  - enabled: 1
+    path: Assets/thuraya/Scenes/Level_Hijaz.unity
+    guid: 2d01bde5dbd006f41a34a10cf9d32688
+  - enabled: 1
+    path: Assets/thuraya/Scenes/Level_South.unity
+    guid: a67bd0453e6b6a841970c55d94d801ef
   m_configObjects: {}

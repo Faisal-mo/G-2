@@ -4,16 +4,16 @@ using System.Collections.Generic;
 public class FTowerPlacer : MonoBehaviour
 {
     [Header("Tower Prefabs")]
-    public GameObject[] towerPrefabsP1; // Assign 3 towers in Inspector (1,2,3)
-    public GameObject[] towerPrefabsP2; // Assign 3 towers in Inspector (8,9,0)
+    public GameObject[] towerPrefabsP1; 
+    public GameObject[] towerPrefabsP2; 
 
     [Header("Mini-Boss")]
-    public GameObject miniBossPrefabP1; // Assign in Inspector
+    public GameObject miniBossPrefabP1; 
     public GameObject miniBossPrefabP2;
     public Transform spawnPointP1, spawnPointP2;
 
-    // Player states
-    private int selectedTowerIndexP1 = -1; // -1 = nothing selected
+    
+    private int selectedTowerIndexP1 = -1; 
     private int selectedTowerIndexP2 = -1;
     private bool isUpgradingP1 = false;
     private bool isUpgradingP2 = false;
@@ -26,13 +26,13 @@ public class FTowerPlacer : MonoBehaviour
         HandlePlayer2Inputs();
     }
 
-    // Player 1 Inputs (1-2-3, W, S, Space)
+    
     void HandlePlayer1Inputs()
     {
-        // Tower Selection (1,2,3)
-        if (Input.GetKeyDown(KeyCode.Alpha1)) selectedTowerIndexP1 = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) selectedTowerIndexP1 = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) selectedTowerIndexP1 = 2;
+        
+        if (Input.GetKeyDown(KeyCode.Alpha1)) selectedTowerIndexP1 = 0; // thuraya
+        if (Input.GetKeyDown(KeyCode.Alpha2)) selectedTowerIndexP1 = 1; // thuraya
+        // if (Input.GetKeyDown(KeyCode.Alpha3)) selectedTowerIndexP1 = 2; // thuraya 
 
         // Upgrade Mode (W)
         if (Input.GetKeyDown(KeyCode.W))
@@ -59,13 +59,13 @@ public class FTowerPlacer : MonoBehaviour
         }
     }
 
-    // Player 2 Inputs (8-9-0, O, L, Enter)
+    // Player 2 Inputs (8-9, O, L, Enter)
     void HandlePlayer2Inputs()
     {
-        // Tower Selection (8,9,0)
-        if (Input.GetKeyDown(KeyCode.Alpha8)) selectedTowerIndexP2 = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha9)) selectedTowerIndexP2 = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha0)) selectedTowerIndexP2 = 2;
+        // thuraya: —»ÿ 8 Ê 9 ›ﬁÿ ( 0)
+        if (Input.GetKeyDown(KeyCode.Alpha8)) selectedTowerIndexP2 = 0; // thuraya
+        if (Input.GetKeyDown(KeyCode.Alpha9)) selectedTowerIndexP2 = 1; // thuraya
+        // if (Input.GetKeyDown(KeyCode.Alpha0)) selectedTowerIndexP2 = 2; // thuraya („Õ–Ê›)
 
         // Upgrade Mode (O)
         if (Input.GetKeyDown(KeyCode.O))

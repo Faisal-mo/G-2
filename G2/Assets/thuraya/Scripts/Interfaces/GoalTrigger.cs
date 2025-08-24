@@ -4,30 +4,24 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class GoalTrigger : MonoBehaviour
 {
-    [Tooltip("’«Õ» Â–Â «·ﬁ·⁄…")]
     public PlayerHealth playerHealth;
-
-    [Tooltip("ﬂ„ Ì‰ﬁ’ „‰ «·ﬁ·Ê» ⁄‰œ œŒÊ· ⁄œÊ Ê«Õœ")]
     public int damagePerEnemy = 1;
 
-    
-    private readonly HashSet<int> processedEnemies = new HashSet<int>();
+    private readonly HashSet<int> processed = new HashSet<int>();
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) { TryProcess(other); }
+    void OnTriggerStay(Collider other) { TryProcess(other); }
+
+    void TryProcess(Collider other)
     {
         var enemy = other.GetComponentInParent<EnemyNavAI>();
         if (!enemy) return;
 
         int id = enemy.GetInstanceID();
-        if (!processedEnemies.Add(id)) return;
+        if (!processed.Add(id)) return;
 
-      
-        if (playerHealth != null)
-            playerHealth.Lose(Mathf.Max(1, damagePerEnemy));
-
+        if (playerHealth) playerHealth.Lose(Mathf.Max(1, damagePerEnemy));
         enemy.SendMessage("NotifyReachedGoal", SendMessageOptions.DontRequireReceiver);
-
-    
         Destroy(enemy.gameObject);
     }
 }

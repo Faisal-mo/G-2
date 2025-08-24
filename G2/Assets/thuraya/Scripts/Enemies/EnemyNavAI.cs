@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Rigidbody))]
 public class EnemyNavAI : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
@@ -29,6 +30,9 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = true;
         agent.autoBraking = true;
+        var rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
     }
 
     public void SetPath(Transform[] waypoints)
