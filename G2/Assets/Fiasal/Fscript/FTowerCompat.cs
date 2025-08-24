@@ -26,6 +26,7 @@ public class TowerCombat : MonoBehaviour
     [Header("Rotation Settings")]
     public float rotationSpeed = 5f;
     public bool rotateToTarget = true;
+    public Transform rotationPart; // Optional: assign for better visuals
 
     [Header("Trap Effects")]
     public ParticleSystem trapEffect;
@@ -47,6 +48,8 @@ public class TowerCombat : MonoBehaviour
     private int myOwnerID;
     private Transform currentTarget;
     private Quaternion defaultRotation;
+    private Vector3 originalPosition;
+    private Transform actualRotationPart; // Actual transform used for rotation
 
     void Start()
     {
@@ -61,15 +64,44 @@ public class TowerCombat : MonoBehaviour
             Debug.LogError("No Tower component found! Add Tower.cs to all towers.");
         }
 
-        // Store default rotation
+        // Store original position and rotation
+        originalPosition = transform.position;
         defaultRotation = transform.rotation;
 
-        // Setup audio source if not assigned
+        // Handle rotation part assignment
+        if (rotationPart != null)
+        {
+            actualRotationPart = rotationPart;
+        }
+        else
+        {
+            // Auto-create rotation part if not assigned
+            GameObject rotPart = new GameObject("RotationPart");
+            rotPart.transform.SetParent(transform);
+            rotPart.transform.localPosition = Vector3.zero;
+            rotPart.transform.localRotation = Quaternion.identity;
+            actualRotationPart = rotPart.transform;
+
+            // Make firePoint a child of rotation part if it exists
+            if (firePoint != null)
+            {
+                firePoint.SetParent(actualRotationPart, true);
+            }
+        }
+
+        // Setup audio source
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.volume = volume;
             audioSource.spatialBlend = 1f;
+        }
+
+        // Freeze position with Rigidbody if exists
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
 
         // Enable tower-specific visuals
@@ -95,6 +127,9 @@ public class TowerCombat : MonoBehaviour
 
     void Update()
     {
+        // Lock position to grid - CRITICAL FIX
+        transform.position = originalPosition;
+
         switch (towerType)
         {
             case TowerType.Cannon:
@@ -116,15 +151,20 @@ public class TowerCombat : MonoBehaviour
     {
         if (rotateToTarget && currentTarget != null)
         {
-            Vector3 direction = (currentTarget.position - transform.position).normalized;
-            direction.y = 0;
+            // Calculate direction to target (Y-axis only for horizontal rotation)
+            Vector3 direction = (currentTarget.position - actualRotationPart.position).normalized;
+            direction.y = 0; // Keep rotation horizontal only
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                actualRotationPart.rotation = Quaternion.Slerp(actualRotationPart.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
         }
         else if (rotateToTarget)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, defaultRotation, rotationSpeed * Time.deltaTime);
+            // Smoothly return to default rotation
+            actualRotationPart.rotation = Quaternion.Slerp(actualRotationPart.rotation, defaultRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -221,24 +261,21 @@ public class TowerCombat : MonoBehaviour
 
     bool IsFacingTarget(Transform target)
     {
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
-        float angle = Vector3.Angle(transform.forward, directionToTarget);
-        return angle < 30f;
+        Vector3 directionToTarget = (target.position - actualRotationPart.position).normalized;
+        float angle = Vector3.Angle(actualRotationPart.forward, directionToTarget);
+        return angle < 45f; // Allow 45 degree shooting cone
     }
 
     void ShootProjectile(Transform target)
     {
         if (projectilePrefab == null || firePoint == null) return;
 
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-
-        Vector3 direction = (target.position - firePoint.position).normalized;
-        projectile.transform.rotation = Quaternion.LookRotation(direction);
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = direction * projectileSpeed;
+            rb.velocity = firePoint.forward * projectileSpeed;
         }
 
         Destroy(projectile, 2f);
@@ -293,12 +330,19 @@ public class TowerCombat : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, transform.forward * 2f);
+        Gizmos.DrawRay(actualRotationPart != null ? actualRotationPart.position : transform.position,
+                      actualRotationPart != null ? actualRotationPart.forward : transform.forward * 2f);
 
         if (currentTarget != null)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, currentTarget.position);
+            Gizmos.DrawLine(actualRotationPart != null ? actualRotationPart.position : transform.position,
+                           currentTarget.position);
         }
+    }
+
+    void LateUpdate()
+    {
+        transform.position = originalPosition;
     }
 }
