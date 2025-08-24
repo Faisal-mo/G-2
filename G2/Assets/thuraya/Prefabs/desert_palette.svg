@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420">
+<rect x="0" y="0" width="1200" height="60" fill="#C2B280"/>
+<text x="20" y="38" font-family="Arial" font-size="22" fill="#000000">Desert_Sand_Beige #C2B280</text>
+<rect x="0" y="60" width="1200" height="60" fill="#D9A441"/>
+<text x="20" y="98" font-family="Arial" font-size="22" fill="#000000">Desert_Gold #D9A441</text>
+<rect x="0" y="120" width="1200" height="60" fill="#8B6A3F"/>
+<text x="20" y="158" font-family="Arial" font-size="22" fill="#000000">Mud_Brown_Dark #8B6A3F</text>
+<rect x="0" y="180" width="1200" height="60" fill="#C97B4E"/>
+<text x="20" y="218" font-family="Arial" font-size="22" fill="#000000">Clay_Orange #C97B4E</text>
+<rect x="0" y="240" width="1200" height="60" fill="#E6D8B5"/>
+<text x="20" y="278" font-family="Arial" font-size="22" fill="#000000">Light_Beige_Stone #E6D8B5</text>
+<rect x="0" y="300" width="1200" height="60" fill="#A89F91"/>
+<text x="20" y="338" font-family="Arial" font-size="22" fill="#000000">Rocky_Gray #A89F91</text>
+<rect x="0" y="360" width="1200" height="60" fill="#5B684E"/>
+<text x="20" y="398" font-family="Arial" font-size="22" fill="#000000">Olivine_Green #5B684E</text>
+</svg>

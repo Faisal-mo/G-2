@@ -1,53 +1,34 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-#if TMP_PRESENT
-using TMPro;
-#endif
 
-public class PlayerHealthUI : MonoBehaviour
+public class PlayerHeartsUI : MonoBehaviour
 {
     public PlayerHealth playerHealth;
-
-    [Header("عرض")]
-    public bool showHearts = false;      // لو تبين قلوب متكررة ❤❤❤
-    public string format = "❤ {0}";      // لو العرض رقمي مثل ❤ 18
-
-#if TMP_PRESENT
-    public TMP_Text tmpText;
-#endif
-    public Text uiText;
+    public Image[] heartImages;     
+    public Sprite heartFull;
+    public Sprite heartEmpty;
 
     void OnEnable()
     {
         if (playerHealth != null)
-            playerHealth.OnLivesChanged += OnLivesChanged;
-
-        // تحديث أولي
-        OnLivesChanged(playerHealth ? playerHealth.Lives : 0);
+            playerHealth.OnLivesChanged += Refresh;
+        Refresh(playerHealth ? playerHealth.Lives : 0);
     }
 
     void OnDisable()
     {
         if (playerHealth != null)
-            playerHealth.OnLivesChanged -= OnLivesChanged;
+            playerHealth.OnLivesChanged -= Refresh;
     }
 
-    void OnLivesChanged(int lives)
+    void Refresh(int lives)
     {
-        string s;
-        if (showHearts)
+        if (heartImages == null) return;
+        for (int i = 0; i < heartImages.Length; i++)
         {
-            int n = Mathf.Clamp(lives, 0, 50);
-            s = n > 0 ? new string('❤', n) : "❤ 0";
+            if (!heartImages[i]) continue;
+            heartImages[i].sprite = (i < lives) ? heartFull : heartEmpty;
+            heartImages[i].enabled = true;
         }
-        else
-        {
-            s = string.Format(format, lives);
-        }
-
-#if TMP_PRESENT
-        if (tmpText) { tmpText.text = s; return; }
-#endif
-        if (uiText) uiText.text = s;
     }
 }
