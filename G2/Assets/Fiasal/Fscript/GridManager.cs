@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
     public int gridWidth = 20;          // Cells per player side
     public int gridDepth = 10;          // Total grid depth
     public float centerGap = 2.0f;      // Space between player zones
+    public int buildCost = 50; //thuraya
 
     [Header("Debug")]
     public bool showOccupiedCells = true;
@@ -60,6 +61,9 @@ public class GridManager : MonoBehaviour
     // Get valid build position for player
     public Vector3 GetRandomBuildPosition(int playerID)
     {
+        var bank = PlayerRegistry.Instance?.GetBank(playerID); //-- thuraya
+        if (bank == null || !bank.CanAfford(buildCost)) return Vector3.zero; //-- thuraya
+
         int maxAttempts = 30; // Increased from 10 for better results
         float halfWidth = (gridWidth * cellSize + centerGap) * 0.5f;
 
@@ -76,7 +80,11 @@ public class GridManager : MonoBehaviour
             );
 
             Vector3 snappedPos = SnapToGrid(pos);
-            if (IsCellEmpty(snappedPos)) return snappedPos;
+            if (IsCellEmpty(snappedPos))
+            {
+                if (!bank.Spend(buildCost)) return Vector3.zero; //-- thuraya
+                return snappedPos;
+            }
         }
         Debug.LogWarning($"Failed to find valid position after {maxAttempts} attempts");
         return Vector3.zero;
