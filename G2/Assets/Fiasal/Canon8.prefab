@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3256273274574704664}
   - component: {fileID: 8288172641268616716}
   - component: {fileID: 7975443317269935597}
-  - component: {fileID: 1584048621036123738}
   m_Layer: 0
   m_Name: Canon8
   m_TagString: Untagged
@@ -106,17 +105,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1584048621036123738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6610052733946581526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b41163b51675e3641b54e32dbf8d6dc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerID: 2
-  level: 1
