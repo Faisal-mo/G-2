@@ -18,7 +18,7 @@ public class WaveSpawner : MonoBehaviour
     public Transform goal;
 
     [Header("Economy")]
-    public Bank ownerBank;                // اربطيه P1/P2
+    public Bank ownerBank;
 
     [Header("Visuals")]
     public bool tintNormalsByMap = true;
@@ -30,6 +30,14 @@ public class WaveSpawner : MonoBehaviour
 
     [Header("Auto Start")]
     public bool autoStartWhenReady = true;
+
+    [Header("Pacing")]
+    public float preWaveDelay = 3f;
+    public float spawnIntervalMultiplier = 2f;
+    public float minSpawnInterval = 0.6f;
+    public int burstSize = 3;
+    public float burstPause = 1.5f;
+    public float bossPreDelay = 2f;
 
     int currentWave;
     bool spawning;
@@ -44,7 +52,6 @@ public class WaveSpawner : MonoBehaviour
     void OnEnable() { TryStart(); }
     void Start() { TryStart(); }
 
-    // يستدعى يدويًا من MapLoader بعد الربط
     public void StartWaves()
     {
         if (started) return;
@@ -56,7 +63,7 @@ public class WaveSpawner : MonoBehaviour
     void TryStart()
     {
         if (started || !autoStartWhenReady) return;
-        if (!IsReady()) return; // ننتظر MapLoader يملأ الحقول
+        if (!IsReady()) return;
         started = true;
         StartCoroutine(RunWaves());
     }
@@ -78,7 +85,8 @@ public class WaveSpawner : MonoBehaviour
         {
             currentWave++;
             bool isBoss = (currentWave % 3) == 0;
-            Debug.Log($"[WaveSpawner:{sideName}] Wave {currentWave}/{total} {(isBoss ? "(BOSS)" : "(Normal)")}");
+
+            if (preWaveDelay > 0f) yield return new WaitForSeconds(preWaveDelay);
 
             if (isBoss) yield return StartCoroutine(SpawnBossWave());
             else yield return StartCoroutine(SpawnNormalWave(currentWave));
@@ -86,7 +94,7 @@ public class WaveSpawner : MonoBehaviour
             if (waitClearForNextWave)
                 yield return StartCoroutine(WaitUntilClearedOrTimeout(clearTimeout));
 
-            if (currentWave < total)
+            if (currentWave < total && interWaveDelay > 0f)
                 yield return new WaitForSeconds(interWaveDelay);
         }
     }
@@ -117,12 +125,18 @@ public class WaveSpawner : MonoBehaviour
         if (e == null || e.enemy == null || e.enemy.prefab == null) { spawning = false; yield break; }
 
         int count = Mathf.Max(1, e.count);
-        float interval = Mathf.Max(0.05f, e.spawnInterval);
+        float interval = Mathf.Max(minSpawnInterval, e.spawnInterval * Mathf.Max(0.01f, spawnIntervalMultiplier));
 
         for (int i = 0; i < count; i++)
         {
             SpawnEnemy(e.enemy, false);
-            yield return new WaitForSeconds(interval);
+
+            if (i + 1 < count)
+            {
+                yield return new WaitForSeconds(interval);
+                if (burstSize > 0 && (i + 1) % burstSize == 0 && (i + 1) < count && burstPause > 0f)
+                    yield return new WaitForSeconds(burstPause);
+            }
         }
 
         spawning = false;
@@ -131,6 +145,8 @@ public class WaveSpawner : MonoBehaviour
     System.Collections.IEnumerator SpawnBossWave()
     {
         spawning = true;
+
+        if (bossPreDelay > 0f) yield return new WaitForSeconds(bossPreDelay);
 
         if (waveConfig.bossEnemy != null)
             SpawnEnemy(waveConfig.bossEnemy, true);
