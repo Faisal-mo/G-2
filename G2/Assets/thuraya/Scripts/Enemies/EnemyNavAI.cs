@@ -4,35 +4,28 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(Rigidbody))]
 public class EnemyNavAI : MonoBehaviour, IDamageable
 {
-    [Header("Stats")]
     public float hp = 100f;
     [Range(0f, 0.9f)] public float armorPercent = 0f;
-    public int rewardOnDeath = 5;
+    public int rewardOnDeath = 10;
 
-    [Header("Navigation")]
     public float reachedDistance = 0.25f;
 
     public Action<EnemyNavAI> OnDied;
     public Action<EnemyNavAI> OnReachedGoal;
 
-    private NavMeshAgent agent;
-    private Transform[] path;
-    private int idx = -1;
-    private Transform finalGoal;
-    private Bank rewardToBank;
-    public int lastHitPlayerID = 1;
+    NavMeshAgent agent;
+    Transform[] path;
+    int idx = -1;
+    Transform finalGoal;
+    Bank rewardToBank;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = true;
         agent.autoBraking = true;
-        var rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
     }
 
     public void SetPath(Transform[] waypoints)
@@ -67,45 +60,19 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
             agent.SetDestination(finalGoal.position);
     }
 
-    public void Initialize(float health, float speed, int reward, float armor, Bank senderBank)
-    {
-        Initialize(health, speed, reward, armor);
-        rewardToBank = senderBank;
-    }
-
-    public void Initialize(float health, float speed, int reward, float armor, object _)
-    {
-        Initialize(health, speed, reward, armor);
-    }
-
-    public void InitFromData(EnemyData data, bool isBoss,
-                             Transform[] waypoints, Transform goal, Bank senderBank)
-    {
-        float hpMult = isBoss ? data.bossHPMultiplier : 1f;
-        float spdMult = isBoss ? data.bossSpeedMultiplier : 1f;
-        hp = data.baseHP * hpMult;
-        rewardOnDeath = data.rewardOnDeath;
-        armorPercent = Mathf.Clamp01(data.armorPercent);
-        agent.speed = data.moveSpeed * spdMult;
-        rewardToBank = senderBank;
-        finalGoal = goal;
-        SetPath(waypoints);
-        if ((path == null || path.Length == 0) && finalGoal != null)
-            agent.SetDestination(finalGoal.position);
-    }
+    public void SetRewardBank(Bank b) { rewardToBank = b; }
 
     void Update()
     {
         if (agent.pathPending) return;
+
         if (path != null && idx >= 0 && idx < path.Length)
         {
             if (agent.remainingDistance <= reachedDistance)
             {
                 idx++;
-                if (idx < path.Length)
-                    agent.SetDestination(path[idx].position);
-                else if (finalGoal != null)
-                    agent.SetDestination(finalGoal.position);
+                if (idx < path.Length) agent.SetDestination(path[idx].position);
+                else if (finalGoal != null) agent.SetDestination(finalGoal.position);
             }
         }
     }
@@ -113,6 +80,7 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
     public void NotifyReachedGoal()
     {
         OnReachedGoal?.Invoke(this);
+        Destroy(gameObject);
     }
 
     public void TakeDamage(float amount)
@@ -122,18 +90,11 @@ public class EnemyNavAI : MonoBehaviour, IDamageable
         if (hp <= 0f) Die();
     }
 
-    public void TakeDamage(float amount, int sourcePlayerID)
+    void Die()
     {
-        lastHitPlayerID = sourcePlayerID;
-        TakeDamage(amount);
-    }
-
-    private void Die()
-    {
-        var bank = rewardToBank ?? PlayerRegistry.Instance?.GetBank(lastHitPlayerID);
-        if (bank != null) bank.Deposit(rewardOnDeath);
+        if (rewardToBank != null && rewardOnDeath > 0)
+            rewardToBank.AddMoney(rewardOnDeath);
         OnDied?.Invoke(this);
         Destroy(gameObject);
     }
 }
-

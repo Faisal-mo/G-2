@@ -7,12 +7,9 @@ public class GoalTrigger : MonoBehaviour
     public PlayerHealth playerHealth;
     public int damagePerEnemy = 1;
 
-    private readonly HashSet<int> processed = new HashSet<int>();
+    readonly HashSet<int> processed = new HashSet<int>();
 
-    void OnTriggerEnter(Collider other) { TryProcess(other); }
-    void OnTriggerStay(Collider other) { TryProcess(other); }
-
-    void TryProcess(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         var enemy = other.GetComponentInParent<EnemyNavAI>();
         if (!enemy) return;
@@ -21,7 +18,6 @@ public class GoalTrigger : MonoBehaviour
         if (!processed.Add(id)) return;
 
         if (playerHealth) playerHealth.Lose(Mathf.Max(1, damagePerEnemy));
-        enemy.SendMessage("NotifyReachedGoal", SendMessageOptions.DontRequireReceiver);
-        Destroy(enemy.gameObject);
+        enemy.NotifyReachedGoal();
     }
 }

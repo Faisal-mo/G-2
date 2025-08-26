@@ -39,6 +39,9 @@ public class WaveSpawner : MonoBehaviour
     public float burstPause = 1.5f;
     public float bossPreDelay = 2f;
 
+    [Header("Rewards")]
+    public Bank killRewardBank;
+
     int currentWave;
     bool spawning;
     bool started;
@@ -181,6 +184,7 @@ public class WaveSpawner : MonoBehaviour
 
         float hp = data.hp * (isBoss ? waveConfig.bossHpMultiplier : 1f);
         float spd = data.moveSpeed * (isBoss ? waveConfig.bossSpeedMultiplier : 1f);
+        int reward = isBoss ? 30 : 10;
 
         var ai = go.GetComponent<EnemyNavAI>();
         if (ai != null)
@@ -188,10 +192,8 @@ public class WaveSpawner : MonoBehaviour
             if (path && path.waypoints != null && path.waypoints.Length > 0)
                 ai.SetPath(path.waypoints);
 
-            ai.Initialize(hp, spd, data.rewardOnDeath, data.armorPercent, goal);
-
-            if (ownerBank != null)
-                ai.SendMessage("SetRewardBank", ownerBank, SendMessageOptions.DontRequireReceiver);
+            ai.Initialize(hp, spd, reward, data.armorPercent, goal);
+            ai.SetRewardBank(killRewardBank);
         }
         else
         {

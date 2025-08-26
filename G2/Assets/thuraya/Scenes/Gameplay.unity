@@ -649,6 +649,13 @@ MonoBehaviour:
   overrideMapInInspector: 0
   inspectorMap: 0
   autoStartWhenReady: 1
+  preWaveDelay: 3
+  spawnIntervalMultiplier: 2
+  minSpawnInterval: 0.6
+  burstSize: 3
+  burstPause: 1.5
+  bossPreDelay: 2
+  killRewardBank: {fileID: 1260368662}
 --- !u!4 &178519060
 Transform:
   m_ObjectHideFlags: 0
@@ -1227,6 +1234,13 @@ MonoBehaviour:
   overrideMapInInspector: 0
   inspectorMap: 0
   autoStartWhenReady: 1
+  preWaveDelay: 3
+  spawnIntervalMultiplier: 2
+  minSpawnInterval: 0.6
+  burstSize: 3
+  burstPause: 1.5
+  bossPreDelay: 2
+  killRewardBank: {fileID: 1650555528}
 --- !u!4 &610521739
 Transform:
   m_ObjectHideFlags: 0

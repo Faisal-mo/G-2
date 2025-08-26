@@ -2,7 +2,7 @@
 
 public class PathWaypoints : MonoBehaviour
 {
-    [Tooltip("رتّبي النقاط: قدّام → جنب → قدّام، وخلي آخر نقطة داخل منطقة الهدف")]
+   
     public Transform[] waypoints;
 
     void OnDrawGizmos()
