@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerType: 1
-  attackRange: 10
+  attackRange: 7
   attackRate: 2
   maxTargets: 2
   enemyLayer:
