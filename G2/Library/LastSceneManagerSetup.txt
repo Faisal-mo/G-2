@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/thuraya/Scenes/Level_South.unity
+- path: Assets/thuraya/Scenes/Gameplay.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
