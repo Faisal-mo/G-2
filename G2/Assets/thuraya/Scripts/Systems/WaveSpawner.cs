@@ -180,8 +180,6 @@ public class WaveSpawner : MonoBehaviour
                 agent.Warp(hit.position);
         }
 
-        if (!isBoss && tintNormalsByMap) ApplyTintByMap(go, data);
-
         float hp = data.hp * (isBoss ? waveConfig.bossHpMultiplier : 1f);
         float spd = data.moveSpeed * (isBoss ? waveConfig.bossSpeedMultiplier : 1f);
         int reward = isBoss ? 30 : 10;
@@ -198,25 +196,6 @@ public class WaveSpawner : MonoBehaviour
         else
         {
             Debug.LogWarning($"[WaveSpawner:{sideName}] Spawned prefab has no EnemyNavAI!");
-        }
-    }
-
-    void ApplyTintByMap(GameObject root, EnemyData data)
-    {
-        Color color = (CurrentMap == MapId.Diriyah) ? data.colorDiriyah
-                    : (CurrentMap == MapId.Hijaz) ? data.colorHijaz
-                                                    : data.colorEgypt;
-
-        var rends = root.GetComponentsInChildren<Renderer>(true);
-        foreach (var r in rends)
-        {
-            if (!r) continue;
-            var mats = r.materials;
-            for (int i = 0; i < mats.Length; i++)
-            {
-                var m = mats[i];
-                if (m && m.HasProperty("_Color")) m.color = color;
-            }
         }
     }
 }

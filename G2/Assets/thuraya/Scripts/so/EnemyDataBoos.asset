@@ -24,6 +24,6 @@ MonoBehaviour:
   bossPrefab_Egypt: {fileID: 7153413839425197891, guid: 9ab08270570dcb048923ee44179877ae, type: 3}
   bossHPMultiplier: 8
   bossSpeedMultiplier: 1.1
-  colorDiriyah: {r: 0.6, g: 0.9, b: 0.6, a: 1}
-  colorHijaz: {r: 0.9, g: 0.6, b: 0.6, a: 1}
-  colorEgypt: {r: 0.9, g: 0.9, b: 0.6, a: 1}
+  colorDiriyah: {r: 1, g: 1, b: 1, a: 0.5294118}
+  colorHijaz: {r: 0.9, g: 0.6, b: 0.6, a: 0}
+  colorEgypt: {r: 0.9, g: 0.9, b: 0.6, a: 0}

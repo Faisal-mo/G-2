@@ -21,11 +21,6 @@ public class EnemyData : ScriptableObject
     public float bossHPMultiplier = 8f;
     public float bossSpeedMultiplier = 1.1f;
 
-    [Header("Per-Map Tint (Normals Only)")]
-    public Color colorDiriyah = new Color(0.6f, 0.9f, 0.6f);
-    public Color colorHijaz = new Color(0.9f, 0.6f, 0.6f);
-    public Color colorEgypt = new Color(0.9f, 0.9f, 0.6f);
-
     public GameObject prefab => basePrefab;  
     public float hp => baseHP;
 }
